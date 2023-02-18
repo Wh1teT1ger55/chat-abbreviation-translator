@@ -1,3 +1,5 @@
+console.log("Loaded text: " + data);
+
 let text = "";
 let translations = {};
 
