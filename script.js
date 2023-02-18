@@ -1,11 +1,11 @@
-let inputText = "";
+let text = "";
 let translations = {};
 
 function loadText() {
   fetch("text1.txt")
     .then(response => response.text())
     .then(data => {
-      inputText = data;
+      text = data;
       translateText();
     })
     .catch(error => console.log(error));
@@ -18,32 +18,29 @@ function loadTranslations() {
       let lines = data.split("\n");
       lines.forEach(line => {
         let parts = line.split(":");
-        let germanWord = parts[0].trim();
-        let englishTranslation = parts[1].trim();
-        translations[germanWord] = englishTranslation;
+        translations[parts[0]] = parts[1];
       });
       translateText();
     })
     .catch(error => console.log(error));
 }
 
-
 function translateText() {
-  let words = inputText.split(" ");
-  let translatedWords = words.map(word => {
+  let translatedText = "";
+  let words = text.split(" ");
+  words.forEach(word => {
     if (word in translations) {
-      return translations[word];
+      translatedText += translations[word] + " ";
     } else {
-      return word;
+      translatedText += word + " ";
     }
   });
-  let translatedText = translatedWords.join(" ");
-  document.getElementById("output").innerHTML = translatedText;
+  document.getElementById("output").textContent = translatedText;
 }
 
-function translate() {
-  inputText = document.getElementById("input").value;
-  translateText();
+function init() {
+  loadText();
+  loadTranslations();
 }
 
-loadTranslations();
+init();
