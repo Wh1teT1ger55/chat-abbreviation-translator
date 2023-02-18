@@ -18,11 +18,15 @@ function loadTranslations() {
       let lines = data.split("\n");
       lines.forEach(line => {
         let parts = line.split(":");
-        translations[parts[0]] = parts[1];
+        let germanWord = parts[0].trim();
+        let englishTranslation = parts[1].trim();
+        translations[germanWord] = englishTranslation;
       });
+      translateText();
     })
     .catch(error => console.log(error));
 }
+
 
 function translateText() {
   let words = inputText.split(" ");
