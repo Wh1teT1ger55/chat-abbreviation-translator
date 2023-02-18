@@ -1,19 +1,16 @@
-// Variablen für den Text und die Übersetzungen
-let text = "";
+let inputText = "";
 let translations = {};
 
-// Funktion, um Text von text1.txt zu laden
 function loadText() {
   fetch("text1.txt")
     .then(response => response.text())
     .then(data => {
-      text = data;
+      inputText = data;
       translateText();
     })
     .catch(error => console.log(error));
 }
 
-// Funktion, um Übersetzungen von text2.txt zu laden
 function loadTranslations() {
   fetch("text2.txt")
     .then(response => response.text())
@@ -23,29 +20,26 @@ function loadTranslations() {
         let parts = line.split(":");
         translations[parts[0]] = parts[1];
       });
-      translateText();
     })
     .catch(error => console.log(error));
 }
 
-// Funktion, um den Text zu übersetzen
 function translateText() {
-  let translatedText = "";
-  let words = text.split(" ");
-  words.forEach(word => {
+  let words = inputText.split(" ");
+  let translatedWords = words.map(word => {
     if (word in translations) {
-      translatedText += translations[word] + " ";
+      return translations[word];
     } else {
-      translatedText += word + " ";
+      return word;
     }
   });
-  document.getElementById("translated-text").textContent = translatedText;
+  let translatedText = translatedWords.join(" ");
+  document.getElementById("output").innerHTML = translatedText;
 }
 
-// Funktion, die ausgeführt wird, wenn die HTML-Seite geladen ist
-function init() {
-  loadText();
-  loadTranslations();
+function translate() {
+  inputText = document.getElementById("input").value;
+  translateText();
 }
 
-init();
+loadTranslations();
